@@ -798,8 +798,39 @@ class Grafo:
                     lista.insereA(i,j)
         
         return lista
+    # Método para realizar a ordenação topológica
+    def ordenacaoTopologica(self):
+        # Calcula o grau de entrada para cada nó
+        grau_entrada = [0] * self.n
+        for i in range(self.n):
+            for j in range(self.n):
+                if self.adj[j][i] == 1:
+                    grau_entrada[i] += 1
 
+        # Inicializa a fila circular com todos os nós com grau de entrada zero
+        fila = FilaCircular(self.n)  # Tamanho da fila é o número de nós
+        for i in range(self.n):
+            if grau_entrada[i] == 0:
+                fila.enqueue(i)
 
+        resultado = []
+
+        while not fila.isEmpty():
+            u = fila.dequeue()  # Remove o nó da frente da fila
+            resultado.append(u)
+
+            # Reduz o grau de entrada dos nós adjacentes
+            for v in range(self.n):
+                if self.adj[u][v] == 1:
+                    grau_entrada[v] -= 1
+                    if grau_entrada[v] == 0:
+                        fila.enqueue(v)
+
+        # Verifica se existe ciclo no grafo
+        if len(resultado) != self.n:
+            print("O grafo contém um ciclo, logo não pode ser ordenado topologicamente.")
+        else:
+            return resultado
 
 
 
