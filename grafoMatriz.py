@@ -2,7 +2,7 @@ from filaCircular import FilaCircular
 from pilha import Pilha
 from grafoLista import GrafoLista
 from grafoLista import TGrafoListaND
-
+import os
 class Grafo:    
 
 
@@ -145,20 +145,7 @@ class Grafo:
         arq.close()
         return novo
     
-    def ler(nomeArquivo):
-        arq = open(nomeArquivo)
-        linhas = arq.readlines()
-        n = int(linhas[0])
-        m = int(linhas[1])
-        
-        novo = Grafo(n)
-
-        for i in range(2,m+2):
-            v, w = linhas[i].split(" ")
-            novo.insereA(int(v),int(w))
-        
-        arq.close()
-        return novo
+ 
 
     """ def Cria_Grafo_Por_Txt(self,caminho):
         
@@ -501,9 +488,129 @@ class TGrafoND:
     # construtor da classe grafo
     def __init__(self, n=TAM_MAX_DEFAULT):
         self.n = n # número de vértices
+        self.clips = []
         self.m = 0 # número de arestas
+        self.arquivos_pessoa=[]
+        self.arquivos_animal=[]
+        self.arquivos_carro=[]
         # matriz de adjacência
         self.adj = [[0 for i in range(n)] for j in range(n)]
+
+    def vertices_conectados(self, vertice):
+        
+        
+
+        conectados = []
+        for i, valor in enumerate(self.adj[vertice]):
+            if valor == 1:
+                conectados.append(i)
+
+        return conectados
+
+    def lerClips(self,diretorio):
+        
+
+        # Percorrer todos os arquivos e subdiretórios no diretório fornecido
+        for root, dirs, files in os.walk(diretorio):
+            novo = TGrafoND(0)
+            for file in files:
+                # Obter o caminho completo do arquivo
+                caminho_arquivo = os.path.join(root, file)
+                novo.adicionarV()
+                novo.clips.append(caminho_arquivo)
+                # Verificar se o nome do arquivo contém "Pessoa", "Animal" ou "Carro"
+                flag=0
+                if "Pessoa" in file:
+                    flag=1
+                    novo.arquivos_pessoa.append(caminho_arquivo)
+                if "Animal" in file:
+                    flag=1
+                    novo.arquivos_animal.append(caminho_arquivo)
+                if "Carro" in file:
+                    flag=1
+                    novo.arquivos_carro.append(caminho_arquivo)
+                if(flag==0):
+                    print(file)
+            for x in range( len(novo.arquivos_pessoa)):
+                vertice1 = novo.clips.index(novo.arquivos_pessoa[x])
+                for y in range(len(novo.arquivos_pessoa)):
+                    if(x==y):
+                        continue
+                    vertice1 = novo.clips.index(novo.arquivos_pessoa[y])
+                    novo.insereA(x,y)
+            
+            
+            for x in range(len(novo.arquivos_animal)):
+                vertice1 = novo.clips.index(novo.arquivos_animal[x])
+                for y in range (len(novo.arquivos_animal)):
+                    if(x==y):
+                        continue
+                    vertice2 = novo.clips.index(novo.arquivos_animal[y])
+                    novo.insereA(vertice1,vertice2)
+            
+            
+            
+            for x in range(len(novo.arquivos_carro)):
+                vertice1 = novo.clips.index(novo.arquivos_carro[x])
+                for y in range(len(novo.arquivos_carro)):
+                    if(x==y):
+                        continue
+                    vertice2 = novo.clips.index(novo.arquivos_carro[y])
+                    novo.insereA(vertice1,vertice2)
+
+        return novo
+
+
+
+
+
+    def adicionarV(self):
+        # Aumenta a matriz para incluir um novo vértice
+        nova_matriz = [[0 for _ in range(self.n + 1)] for _ in range(self.n + 1)]
+        
+        # Copia a matriz existente para a nova matriz
+        for i in range(self.n):
+            for j in range(self.n):
+                nova_matriz[i][j] = self.adj[i][j]
+        
+        # Atualiza a matriz de adjacência
+        self.adj = nova_matriz
+        self.n += 1  # Incrementa o número de vértices
+
+    def gravar_txt(self):
+         with open('GRAFO.txt', 'w') as f:
+            f.write(f"{self.n}\n")  # Número de vértices
+            f.write(f"{self.m}\n")  # Número de arestas
+            
+            # Salva os vértices e suas informações
+            for i in range(self.n):
+                
+                    f.write(f"{i + 1}\n")  # Sem apelido ou peso
+
+            # Salva as arestas
+            for i in range(self.n):
+                for j in range(self.n):
+                    if self.adj[i][j] != 0:
+                        f.write(f"{i + 1} {j + 1} {self.adj[i][j]}\n")
+
+
+    def mostra_txt(self):
+        print("0") 
+        print(f"{self.n}")  
+        
+            
+            # Salva os vértices e suas informações
+        for i in range(self.n):
+                
+                    print(f"{i + 1}")  # Sem apelido ou peso
+
+          
+            # Salva as arestas
+        for i in range(self.n):
+                for j in range(self.n):
+                    if self.adj[i][j] != 0:
+                        print(f"{i + 1} {j + 1} {self.adj[i][j]}")
+    
 
 	# Insere uma aresta no Grafo tal que
 	# v é adjacente a w
@@ -645,7 +752,7 @@ class TGrafoND:
            gra.insereA(int(info[x][0]),int(info[x][2]))
         return gra """
     
-    def ler(nomeArquivo):
+    def ler(self,nomeArquivo):
         arq = open(nomeArquivo)
         linhas = arq.readlines()
         n = int(linhas[0])
@@ -656,7 +763,7 @@ class TGrafoND:
         for i in range(2,m+2):
             v, w = linhas[i].split(" ")
             novo.insereA(int(v),int(w))
-        
+        self = novo
         arq.close()
         return novo
 
@@ -669,7 +776,7 @@ class TGrafoND:
             vAtual = p.pop()  # Desempilha o vértice atual
 
             if not visitado[vAtual]:  # Verifica se o vértice já foi visitado
-                print(f"Visitando o vértice {vAtual}")
+                #print(f"Visitando o vértice {vAtual}")
                 visitado[vAtual] = True  # Marca o vértice como visitado
 
                 # Adiciona todos os vértices adjacentes não visitados na pilha, na ordem inversa
@@ -729,9 +836,9 @@ class TGrafoND:
         if self.eh_conectado():
             return 1  # C3 - Conectado
         elif self.numero_de_componentes() > 1:
-            return 1  # C1 - Desconectado
+            return 1  # c3
         else:
-            return 0  # C0 - Desconectad
+            return 1 # C0 - Desconectad
 	    
 
 	# Apresenta o Grafo contendo
@@ -766,6 +873,7 @@ class TGrafoND:
         print("\nfim da impressao do grafo." )
     
     def dijkstra(self, origem):
+
         # Inicializa as distâncias e a lista de visitados
         dist = [float('inf')] * self.n
         dist[origem] = 0
