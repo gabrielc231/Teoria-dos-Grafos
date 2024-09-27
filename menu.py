@@ -37,14 +37,14 @@ class GraphApp:
             button = tk.Button(self.root, text=text, command=command, width=40, padx=10, pady=5)
             button.pack(pady=5)
     def clips(self):
-        self.grafo = self.grafo.lerClips(r"F:\Nova pasta (2)\clips segurança")
+        self.grafo = self.grafo.lerClips(r"clips segurança")
         messagebox.showinfo("sucesso", "Arquivo lido e grafo montado!")
     def navegacao(self):
         
         VideoPlayer(self.root, self.grafo,)
         #root.mainloop()
     def informacoes(self):
-        messagebox.showinfo("informacoes", "Essa aplicacao foi feita Por Francesco Zangrandi Coppola \n André Franco Raineri")
+        messagebox.showinfo("informacoes", "Essa aplicacao foi feita Por Francesco Zangrandi Coppola \n André Franco Raineri\n e Gabriel Gonzaga Chung")
 
     def ler_dados(self):
         self.grafo = self.grafo.ler("GRAFO.txt")
@@ -78,6 +78,7 @@ class GraphApp:
         vertice1 = simpledialog.askinteger("onde a aresta comeca?", "Digite o numero do primeiro vertice:")
         vertice2 = simpledialog.askinteger("onde a aresta termina?", "Digite o numero do segundo vertice:")
         self.grafo.removeA(vertice1,vertice2)
+        self.grafo.removeA(vertice2,vertice1)
         messagebox.showinfo("sucesso", "aresta removida")
 
     def mostrar_conteudo(self):
