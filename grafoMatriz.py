@@ -838,7 +838,7 @@ class TGrafoND:
         elif self.numero_de_componentes() > 1:
             return 1  # c3
         else:
-            return 1 # C0 - Desconectad
+            return 0 # C0 - Desconectad
 	    
 
 	# Apresenta o Grafo contendo

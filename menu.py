@@ -91,7 +91,7 @@ class GraphApp:
         messagebox.showinfo("sucesso", "grafo exibido em pronpt de commando")
 
     def apresentar_conexidade(self):
-        aux = self.grafo.categoria_conexidade()
+        aux = self.grafo.eh_conectado2()
         if(aux):
             messagebox.showinfo("C3", "O grafo e fortemente conexo")
         else:
