@@ -755,14 +755,16 @@ class TGrafoND:
     def ler(self,nomeArquivo):
         arq = open(nomeArquivo)
         linhas = arq.readlines()
-        n = int(linhas[0])
-        m = int(linhas[1])
+        n = int(linhas[1])
+        m = int(linhas[2+n])
         
         novo = TGrafoND(n)
 
-        for i in range(2,m+2):
-            v, w = linhas[i].split(" ")
-            novo.insereA(int(v),int(w))
+        for i in range(3+n,m+3+n):
+            aux=i
+            v, w,va= linhas[i].split(" ")
+            
+            novo.insereAV(int(v)-1,int(w)-1,int(va))
         self = novo
         arq.close()
         return novo
