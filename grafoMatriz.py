@@ -579,6 +579,7 @@ class TGrafoND:
 
     def gravar_txt(self):
          with open('GRAFO.txt', 'w') as f:
+            f.write(f"{0}\n")
             f.write(f"{self.n}\n")  # Número de vértices
             f.write(f"{self.m}\n")  # Número de arestas
             
