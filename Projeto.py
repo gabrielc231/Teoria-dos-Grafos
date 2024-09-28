@@ -5,9 +5,9 @@ import grafoMatriz
 
 # feito por : 
 # 
-# André Franco Raineri
-# Francesco Zangrandi Coppola
-# Gabriel Gonzaga Chung
+# André Franco Raineri 10390470   
+# Francesco Zangrandi Coppola 10403340
+# Gabriel Gonzaga Chung 10403025
 
 
 
