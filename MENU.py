@@ -36,9 +36,7 @@ class GraphApp:
             ("Inserir aresta", self.inserir_aresta),
             ("Remove vértice", self.remove_vertice),
             ("Remove aresta", self.remove_aresta),
-            ("Mostrar conteúdo do arquivo", self.mostrar_conteudo),
             ("Mostrar grafo", self.mostrar_grafo),
-            ("Apresentar a conexidade do grafo e o reduzido", self.apresentar_conexidade),
             ("Informacoes", self.informacoes),
             ("Encerrar a aplicação", self.encerrar_aplicacao),
         ]
@@ -101,21 +99,14 @@ class GraphApp:
        
         messagebox.showinfo("sucesso", "aresta removida")
 
-    def mostrar_conteudo(self):
-        salvar_grafo_em_txt(self.grafo, "GRAFO.txt", tipo_grafo=1)
-        messagebox.showinfo("sucesso", "Grafo exibido em pronpt de commando")
+  
         
 
     def mostrar_grafo(self):
         self.grafo.print()
         messagebox.showinfo("sucesso", "grafo exibido em pronpt de commando")
 
-    def apresentar_conexidade(self):
-        aux = self.grafo.eh_conectado2()
-        if(aux):
-            messagebox.showinfo("C3", "O grafo e fortemente conexo")
-        else:
-            messagebox.showinfo("C0", "O grafo e desconexo")
+    
        
 
     def encerrar_aplicacao(self):
